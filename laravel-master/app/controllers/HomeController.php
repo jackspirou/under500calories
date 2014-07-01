@@ -17,7 +17,8 @@ class HomeController extends BaseController {
 
 	public function showWelcome()
 	{
-		return View::make('hello');
+		dd(getenv('DB_HOST'));
+		//return View::make('hello');
 	}
 
 }
