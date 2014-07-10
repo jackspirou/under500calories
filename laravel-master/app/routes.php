@@ -11,9 +11,10 @@
 |
 */
 
-Route::get('/', function()
-{
-	//return View::make('hello');
+Route::resource('home', 'HomeController',
+	['only' => ['index']]
+);
 
-	return Tag::all();
-});
+Route::get('/', [
+	'as' => 'home.index', 'uses' => 'HomeController@index'
+]);

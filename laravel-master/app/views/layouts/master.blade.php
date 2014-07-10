@@ -52,20 +52,13 @@
         @yield('body')
 
         <header>
-            @if(isset($nav) ? $nav : 'true')
-                @include('layouts.navbar')
-            @endif
         </header>
 
         <div id="content-container">
-            @if(isset($nav) ? $nav : 'true')
-                <div class="navbar-padding"></div>
-            @endif
             @yield('content')
         </div>
 
         <footer>
-            @include('layouts.footer')
         </footer>
 
         <!-- Render Javascript Libraries At End Of Document So Pages Load Faster -->
