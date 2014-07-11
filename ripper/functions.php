@@ -1,8 +1,8 @@
 <?php
-$user="under500adev";
+$user="under500ripper";
 $password="drink1Whiskey!";
-$database="under500adev";
-$host="under500adev.db.11813212.hostedresource.com";
+$database="under500ripper";
+$host="under500ripper.db.11813212.hostedresource.com";
 /*
 $mysqli = new mysqli($host,$user,$password,$database);
 if ($mysqli->connect_errno) {
@@ -81,15 +81,15 @@ $userAgent[]='Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_7; da-dk) AppleWebK
 
 echo $userAgent[$randnum];
 
-	
+
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($ch, CURLOPT_VERBOSE, true);
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 	curl_setopt($ch, CURLOPT_REFERER, "http://yummly.com/");
    	curl_setopt($ch, CURLOPT_USERAGENT, $userAgent[$randnum]);
 	curl_setopt($ch, CURLOPT_URL,"$url");
-	
-	
+
+
 $filecontents = curl_exec ($ch);
 return($filecontents);
 }

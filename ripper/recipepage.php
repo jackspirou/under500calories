@@ -18,44 +18,49 @@ while($row = mysql_fetch_array($result1)){
 
 
 
-
 	$page=file_get_contents('recipe_pages/'.$id.'.txt');
+
 
 //START INGREDIENTS
 
-$ingredient_to_recipe_sql='INSERT INTO ingredient_to_recipe (ingredient,amount,unit,remainder,recipe_id) VALUES ';
-
-$ingredient_sql='INSERT IGNORE INTO ingredients (name) VALUES ';
+$amount_sql='INSERT INTO amounts (ingredient_id,amount,unit,remainder,recipe_id) VALUES ';
 $ingredients=explode('itemprop="ingredients"',$page);
-$num=count($ingredients);
+
+$num = count($ingredients);
+
 $x=1;
 
 $ingredientlist='';
 array($ingredientlist);
 while($x<$num)
 {
-	
+
 
 	//seperate ingredient amount and name
 	$amount=explode('class="amount">',$ingredients[$x]);
 	$amount=explode('class="name">',$amount[1]);
-	
+
+
+
 	$amount=$amount[0];
 	$ingredientname=$amount[1];
-//	echo"<hr>$amount<hr>";
-	
+
+
 	$amount=explode('<span class="fraction">',$amount);
 
 $numerator='';
 $denominator='';
 $unit='';
 $decimal='';
+
+
+
 	if($amount[1]!='')
 	{
 		$wholeamount=$amount[0];
-		
+
 //		echo"amount: fraction<br>";
-		
+
 		$numerator=explode('"numerator">',$amount[1]);
 		$denominator=explode('"denominator">',$numerator[1]);
 		$numerator=explode('</span>',$numerator[1]);
@@ -67,7 +72,7 @@ $decimal='';
 //		echo 'numerator: '.$numerator.' denominator: '.$denominator;
 
 
-	
+
 
 		$amount=$wholeamount.' '.implode($amount);
 
@@ -93,39 +98,80 @@ $decimal='';
 		$decimal=$wholeamount;
 	}
 
-		
-	
-	
+
+
+
 	$ingredientname=explode('class="name">',$ingredients[$x]);
 	$ingredientname=explode('</strong>',$ingredientname[1]);
-	$ingredientname=$ingredientname[0];	
-	
+	$ingredientname=$ingredientname[0];
+
 	$remainder=explode('"remainder">',$ingredients[$x]);
 	$remainder=explode('</span>',$remainder[1]);
-	$remainder=$remainder[0];	
-	echo $fraction.' '.$unit.' '.$name.' '.$remainder.' : '.$decimal.'<br>';	
+	$remainder=$remainder[0];
+	echo $fraction.' '.$unit.' '.$name.' '.$remainder.' : '.$decimal.'<br>';
 	$y=$x-1;
 //	echo $amount[0].' '.$name[0];
 	$amount=trim($fraction);
 	$ingredientname=trim(strip_tags($ingredientname));
 	$unit=trim(strip_tags($unit));
 $unit=html_entity_decode($unit, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-$unit=mysql_real_escape_string($unit);	
+$unit=mysql_real_escape_string($unit);
 	$ingredientname=html_entity_decode($ingredientname, ENT_QUOTES | ENT_HTML5, 'UTF-8');
 $ingredientname=mysql_real_escape_string($ingredientname);
-	
+
 	$remainder=html_entity_decode($remainder, ENT_QUOTES | ENT_HTML5, 'UTF-8');
 	$remainder=mysql_real_escape_string($remainder);
 	$remainder=trim(strip_tags($remainder));
 	if($x>1)
 	{
-		$ingredient_to_recipe_sql.=', ';
-		$ingredient_sql.=', ';
+		$amount_sql.=', ';
+
 	}
-	$ingredient_to_recipe_sql.="('$ingredientname','$amount','$unit','$remainder',$id)";
+
+/*  $ingredient_exists_sql="SELECT id FROM ingredients WHERE name='$ingredientname'";
+  $result=mysql_query($ingredient_exists_sql);
+  $num_results = mysql_num_rows($result);
+
+  echo"<BR>ingredient exists sql: $ingredient_exists_sql";
+
+  if ($num_results == 0){
+    $ingredient_insert_sql="INSERT INTO ingredients (name) VALUES '$ingredientname'";
+    $result=mysql_query($ingredient_insert_sql);
+      $ingredient_id=mysql_insert_id($result);
+  echo"<BR>ingredient insert sql: $ingredient_insert_sql";
+  }
+  else{
+    $res = mysql_fetch_assoc($result);
+
+  $ingredient_id= $res["id"];
+
+  }
+*/
+
+$ingredient_insert_sql="INSERT IGNORE INTO ingredients (name) VALUES ('$ingredientname')";
+echo"<BR>INGREDIENT SQL= $ingredient_insert_sql";
+if(!$result = mysql_query($ingredient_insert_sql)){
+    die('There was an error running the ingredient_insert_sql query [' . mysql_error() . ']');
+}
+
+
+
+
+
+
+$ingredient_id_sql="SELECT id FROM ingredients WHERE name='$ingredientname'";
+  $result=mysql_query($ingredient_id_sql);
+  $res = mysql_fetch_assoc($result);
+
+  $ingredient_id= $res["id"];
+
+
+	$amount_sql.="('$ingredient_id','$amount','$unit','$remainder',$id)";
 	$ingredientlist[]=array('amount' => $amount, 'name' => $ingredientname, 'unit' => $unit, 'remainder'=>$remainder);
 	$ingredient_sql.="('$ingredientname')";
 	$x++;
+
+  echo"<BR>amount sql: $amount_sql";
 
 }
 
@@ -189,9 +235,9 @@ $protein=nutrition('Protein',$page);
 
 
 //START TAGS
-$tag_to_recipe_sql='INSERT IGNORE INTO tag_to_recipe (tag,recipe_id,tag_recipe_id) VALUES ';
+$recipe_tag_sql='INSERT IGNORE INTO recipe_tag (recipe_id,tag_id) VALUES ';
 
-$tag_sql='INSERT IGNORE INTO tags (name) VALUES ';
+
 
 
 $tags=explode('Tags</h3>',$page);
@@ -208,11 +254,24 @@ foreach($tags as $value)
 	{
 		if($x>1)
 		{
-			$tag_to_recipe_sql.=', ';
-			$tag_sql.=', ';
+			$recipe_tag_sql.=', ';
+
 		}
-		$tag_to_recipe_sql.="('$tag',$id,'".$tag."_".$id."')";
-		$tag_sql.="('$tag')";
+
+
+    $tag_sql="INSERT IGNORE INTO tags (name) VALUES ('$tag')";
+    if(!$result = mysql_query($tag_sql)){
+      die('There was an error running the tag_sql query [' . mysql_error() . ']');
+    }
+    $tag_id_sql="SELECT id FROM tags WHERE name='$tag'";
+
+
+    $result=mysql_query($tag_id_sql);
+    $res = mysql_fetch_assoc($result);
+
+    $tag_id= $res["id"];
+    $recipe_tag_sql.="($id,'$tag_id')";
+
 	}
 	$x++;
 }
@@ -286,17 +345,16 @@ if(!$result = mysql_query($sql)){
     die('There was an error running the query [' . mysql_error() . ']');
 }
 echo $sql;
-if(!$result = mysql_query($ingredient_sql)){
+
+if(!$result = mysql_query($amount_sql)){
     die('There was an error running the query [' . mysql_error() . ']');
 }
-if(!$result = mysql_query($ingredient_to_recipe_sql)){
+/*if(!$result = mysql_query($tag_sql)){
     die('There was an error running the query [' . mysql_error() . ']');
 }
-if(!$result = mysql_query($tag_sql)){
-    die('There was an error running the query [' . mysql_error() . ']');
-}
-if(!$result = mysql_query($tag_to_recipe_sql)){
-    die('There was an error running the query [' . mysql_error() . ']');
+*/
+if(!$result = mysql_query($recipe_tag_sql)){
+    die('There was an error running the recipe_tag_sql query [' . mysql_error() . ']');
 }
 
 

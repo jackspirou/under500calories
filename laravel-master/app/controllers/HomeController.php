@@ -10,7 +10,7 @@ class HomeController extends \BaseController {
 	 */
 	public function index()
 	{
-		return View::make('home.index');
+		return View::make('home.index')->With(['header' => 'This is a header']);
 	}
 
 	/**
