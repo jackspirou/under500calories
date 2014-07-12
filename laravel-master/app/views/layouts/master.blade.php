@@ -29,8 +29,7 @@
         <link href="{{ asset('bower_components/fontawesome/css/font-awesome.css') }}" rel="stylesheet">
         <!-- Google API -->
         <link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,400' rel='stylesheet' type='text/css'>
-        <link href='https://fonts.googleapis.com/css?family=Roboto:300,100' rel='stylesheet' type='text/css'>
-        <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,600,300,200&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700' rel='stylesheet' type='text/css'>        <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,600,300,200&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css'>
         <!-- Bootstrap Select CSS -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.3.5/bootstrap-select.min.css" rel="stylesheet">
         <!-- Style CSS -->

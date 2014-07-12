@@ -4,7 +4,7 @@ include('functions.php');
 
 //find a recipe in the DB that needs details
 
-$sql='SELECT id FROM recipes WHERE status=2 LIMIT 1 ';
+$sql='SELECT id FROM recipes WHERE status=2 ';
 //$sql='SELECT id,vendor_link FROM recipes WHERE id=10 LIMIT 1';
 
 if(!$result1 = mysql_query($sql)){
@@ -236,7 +236,7 @@ $protein=nutrition('Protein',$page);
 
 //START TAGS
 $recipe_tag_sql='INSERT IGNORE INTO recipe_tag (recipe_id,tag_id) VALUES ';
-
+$tags_exist=0;
 
 
 
@@ -271,6 +271,8 @@ foreach($tags as $value)
 
     $tag_id= $res["id"];
     $recipe_tag_sql.="($id,'$tag_id')";
+
+    $tags_exist=1;
 
 	}
 	$x++;
@@ -353,11 +355,12 @@ if(!$result = mysql_query($amount_sql)){
     die('There was an error running the query [' . mysql_error() . ']');
 }
 */
+if($tags_exist==1)
+{
 if(!$result = mysql_query($recipe_tag_sql)){
     die('There was an error running the recipe_tag_sql query [' . mysql_error() . ']');
 }
-
-
+}
 
 }
 
