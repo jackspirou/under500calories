@@ -1,13 +1,17 @@
 @extends('layouts/master', ['title' => 'Under 500 Calories'])
 
 @section('js')
+
 @stop
 
 @section('css')
+
 @stop
 
 @section('content')
+
 <div class="container text-left">
+
 @foreach ($recipes as $recipe)
 
     <span><strong>title: {{ $recipe->name }}</strong></span><br/>
@@ -44,5 +48,6 @@
     <br />
 
 @endforeach
+
 </div>
 @stop
