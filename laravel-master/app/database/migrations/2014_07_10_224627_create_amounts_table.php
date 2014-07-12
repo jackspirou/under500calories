@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateTagsTable extends Migration {
+class CreateAmountsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,12 +12,14 @@ class CreateTagsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('tags', function(Blueprint $table)
+		Schema::create('amounts', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('name', 60)->unique();
-			$table->integer('amount')->default(0);
-			$table->integer('status')->default(1);
+			$table->integer('ingredient_id');
+			$table->string('amount', 70)->nullable();
+			$table->string('unit', 70)->nullable();
+			$table->string('remainder')->nullable();
+			$table->integer('recipe_id');
 			$table->timestamps();
 		});
 	}
@@ -30,7 +32,7 @@ class CreateTagsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('tags');
+		Schema::drop('amounts');
 	}
 
 }

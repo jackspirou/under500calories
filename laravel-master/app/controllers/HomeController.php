@@ -10,7 +10,9 @@ class HomeController extends \BaseController {
 	 */
 	public function index()
 	{
-		return View::make('home.index');
+		$recipes = Recipe::take(10)->get();
+
+		return View::make('home.index')->With('recipes', $recipes);
 	}
 
 	/**

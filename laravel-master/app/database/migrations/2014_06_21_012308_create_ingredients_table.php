@@ -15,7 +15,7 @@ class CreateIngredientsTable extends Migration {
 		Schema::create('ingredients', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('name', 60);
+			$table->string('name', 60)->unique();
 			$table->integer('pic')->nullable();
 			$table->integer('amount')->nullable();
 			$table->string('unit', 60)->nullable();
