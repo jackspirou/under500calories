@@ -1,4 +1,6 @@
 <?php
+FUNCTION connect_db()
+{
 $user="under500ripper";
 $password="drink1Whiskey!";
 $database="under500ripper";
@@ -11,7 +13,7 @@ if ($mysqli->connect_errno) {
 */
 mysql_connect($host,$user,$password);
 @mysql_select_db($database) or die( "Unable to select database");
-
+}
 
 FUNCTION getpage($url)
 {

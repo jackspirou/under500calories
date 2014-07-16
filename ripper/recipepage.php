@@ -1,6 +1,7 @@
 <?php
 include('functions.php');
 
+connect_db();
 
 //find a recipe in the DB that needs details
 
@@ -12,9 +13,17 @@ if(!$result1 = mysql_query($sql)){
 }
 
 
-
+$counter=0;
 while($row = mysql_fetch_array($result1)){
-	$id=$row['id'];
+
+  if(fmod($counter,50)==0)
+  {
+    mysql_close();
+    connect_db();
+
+  }
+
+  $id=$row['id'];
 
 
 

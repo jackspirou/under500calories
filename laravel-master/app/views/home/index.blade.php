@@ -19,7 +19,7 @@
           <img src="photos/{{ $recipe->id }}.jpg" style="width:298px; height: 298px;" />
         </div>
         <div class="container" style="font-family: Roboto Condensed; font-weight: 400;width:100%;">
-          <div style="font-size:18px;padding: 6px 0 6px 0;border-bottom: 1px solid #e7e7e7;color:#2e2e2e;">
+          <div style="font-size:18px;height: 81px;padding: 6px 0 6px 0;border-bottom: 1px solid #e7e7e7;color:#2e2e2e;">
             {{ $recipe->name }}
             <span style="font-size: 13px; float:left; color: #6f6f6f;width: 100%;">
               by {{ $recipe->author }}
