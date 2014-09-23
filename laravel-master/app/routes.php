@@ -12,7 +12,8 @@
 */
 
 Route::resource('home', 'HomeController', ['only' => ['index']]);
-
 Route::get('/', [
 	'as' => 'home.index', 'uses' => 'HomeController@index'
 ]);
+
+Route::resource('recipe', 'RecipeController');

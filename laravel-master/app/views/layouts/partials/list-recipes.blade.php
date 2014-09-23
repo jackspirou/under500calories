@@ -29,3 +29,18 @@
 @endforeach
 
 </div>
+
+<hr>
+  <br><br>
+<hr>
+
+  <div class="row">
+      @foreach ($recipes as $recipe)
+    <div class="col-lg-4 col-sm-6 col-xs-12">
+        <a href="#">
+             <img src="photos/{{ $recipe->id }}.jpg" class="thumbnail img-responsive">
+        </a>
+    </div>
+    @endforeach
+
+  </div>
